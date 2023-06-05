@@ -1,0 +1,30 @@
+version: '3'
+services:
+  db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: brunin
+      MYSQL_PASSWORD: brunindog
+      MYSQL_DATABASE: greenheartapi
+    volumes:
+      - dbbase:/var/lib/mysql
+    ports:
+      - "3306:3306"
+  web:
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/greenheartapi
+      SPRING_DATASOURCE_USERNAME: brunin
+      SPRING_DATASOURCE_PASSWORD: brunindog
+  phpmyadmin:
+    image: phpmyadmin
+    ports:
+      - 8000:80
+volumes:
+  dbbase: 
